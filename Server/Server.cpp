@@ -27,15 +27,15 @@
 	#undef max
 	#endif
 
-	// Макросы для выражений зависимых от OS    
+	// ГЊГ ГЄГ°Г®Г±Г» Г¤Г«Гї ГўГ»Г°Г Г¦ГҐГ­ГЁГ© Г§Г ГўГЁГ±ГЁГ¬Г»Гµ Г®ГІ OS    
 	#define WIN(exp) exp
 	#define NIX(exp)
 #elif defined(__linux__)
 	#include <unistd.h>
-	#include <sys/socket.h> // Библиотека для работы с сокетами
+	#include <sys/socket.h> // ГЃГЁГЎГ«ГЁГ®ГІГҐГЄГ  Г¤Г«Гї Г°Г ГЎГ®ГІГ» Г± Г±Г®ГЄГҐГІГ Г¬ГЁ
 	//#include <sys/types.h>
 	#include <netinet/in.h>
-	// Макросы для выражений зависимых от OS    
+	// ГЊГ ГЄГ°Г®Г±Г» Г¤Г«Гї ГўГ»Г°Г Г¦ГҐГ­ГЁГ© Г§Г ГўГЁГ±ГЁГ¬Г»Гµ Г®ГІ OS    
 	#define WIN(exp)
 	#define NIX(exp) exp
 #endif
@@ -46,51 +46,51 @@ using namespace std;
 
 Users users;
 Messages messages;
-map <SOCKET, uint32_t> users_map;	// связка сокет - идентификатор (id) пользователя
+map <SOCKET, uint32_t> users_map;	// Г±ГўГїГ§ГЄГ  Г±Г®ГЄГҐГІ - ГЁГ¤ГҐГ­ГІГЁГґГЁГЄГ ГІГ®Г° (id) ГЇГ®Г«ГјГ§Г®ГўГ ГІГҐГ«Гї
 char request_msg[BUFFER_LENGTH], response_msg[BUFFER_LENGTH];
 SOCKET socket_descriptor;
 fd_set descriptors_set{ 0 };
 const timeval timeout = { 0, 0 };
-bool loop = true;	// флаг продолжения/остановки ChatServer()
+bool loop = true;	// ГґГ«Г ГЈ ГЇГ°Г®Г¤Г®Г«Г¦ГҐГ­ГЁГї/Г®Г±ГІГ Г­Г®ГўГЄГЁ ChatServer()
 
 
-void print_help(const CommandSpace* _commandSpace) {	// печать справки по командам
+void print_help(const CommandSpace* _commandSpace) {	// ГЇГҐГ·Г ГІГј Г±ГЇГ°Г ГўГЄГЁ ГЇГ® ГЄГ®Г¬Г Г­Г¤Г Г¬
 	for (int i = 0; _commandSpace[i].command[0] != 0; i++)
 		cout << "\t" << _commandSpace[i].command << "\t- " << _commandSpace[i].help << '\n';
 }
 
 
-void AtStart() {	// начальные сообщения
+void AtStart() {	// Г­Г Г·Г Г«ГјГ­Г»ГҐ Г±Г®Г®ГЎГ№ГҐГ­ГЁГї
 	cout.clear();
 	cout << SEPARATOR;
-	cout << "---=== Чат-сервер версия 1.0 ===---\n";
+	cout << "---=== Г—Г ГІ-Г±ГҐГ°ГўГҐГ° ГўГҐГ°Г±ГЁГї 1.0 ===---\n";
 	cout << SEPARATOR;
-	cout << "Сервер запущен " << GetTime() << '\n';
+	cout << "Г‘ГҐГ°ГўГҐГ° Г§Г ГЇГіГ№ГҐГ­ " << GetTime() << '\n';
 	cout << SEPARATOR;
-	cout << "Справка по командам:\n";
+	cout << "Г‘ГЇГ°Г ГўГЄГ  ГЇГ® ГЄГ®Г¬Г Г­Г¤Г Г¬:\n";
 	print_help(SERVER_COMMANDS);
 }
 
 
-int server_start() {	// инициализация сервера
+int server_start() {	// ГЁГ­ГЁГ¶ГЁГ Г«ГЁГ§Г Г¶ГЁГї Г±ГҐГ°ГўГҐГ°Г 
 	struct sockaddr_in server_address;
 	int bind_status, connection_status;
 
-	// Создадим сокет
+	// Г‘Г®Г§Г¤Г Г¤ГЁГ¬ Г±Г®ГЄГҐГІ
 	WIN(WSADATA wsaData = {0}; WSAStartup(MAKEWORD(2, 2), &wsaData);)
 
 	socket_descriptor = socket(AF_INET, SOCK_STREAM, 0);
 	if (socket_descriptor WIN(== INVALID_SOCKET)NIX(< 0)) {
-		cout << "Сокет не может быть создан!\n";
-		WIN(cout << "Код ошибки: " << WSAGetLastError() << '\n';)
+		cout << "Г‘Г®ГЄГҐГІ Г­ГҐ Г¬Г®Г¦ГҐГІ ГЎГ»ГІГј Г±Г®Г§Г¤Г Г­!\n";
+		WIN(cout << "ГЉГ®Г¤ Г®ГёГЁГЎГЄГЁ: " << WSAGetLastError() << '\n';)
 		return -1;
 	}
 
 	server_address.sin_addr.s_addr = htonl(INADDR_ANY);
-	server_address.sin_port = htons(PORT_NUMBER);  // Зададим номер порта для связи
-	server_address.sin_family = AF_INET;    // Используем IPv4
+	server_address.sin_port = htons(PORT_NUMBER);  // Г‡Г Г¤Г Г¤ГЁГ¬ Г­Г®Г¬ГҐГ° ГЇГ®Г°ГІГ  Г¤Г«Гї Г±ГўГїГ§ГЁ
+	server_address.sin_family = AF_INET;    // Г€Г±ГЇГ®Г«ГјГ§ГіГҐГ¬ IPv4
 
-	// Привяжем сокет
+	// ГЏГ°ГЁГўГїГ¦ГҐГ¬ Г±Г®ГЄГҐГІ
 	BOOL bOptVal = TRUE;
 	int bOptLen = sizeof(BOOL);
 	int iResult = setsockopt(socket_descriptor, SOL_SOCKET, SO_REUSEADDR, (char*)&bOptVal, bOptLen);
@@ -98,16 +98,16 @@ int server_start() {	// инициализация сервера
 
 	bind_status = bind(socket_descriptor, (struct sockaddr*)&server_address, sizeof(server_address));
 	if (bind_status WIN(== SOCKET_ERROR)NIX(!= 0)) {
-		cout << "Сокет не может быть привязан!\n";
-		WIN(cout << "Код ошибки: " << WSAGetLastError() << '\n';)
+		cout << "Г‘Г®ГЄГҐГІ Г­ГҐ Г¬Г®Г¦ГҐГІ ГЎГ»ГІГј ГЇГ°ГЁГўГїГ§Г Г­!\n";
+		WIN(cout << "ГЉГ®Г¤ Г®ГёГЁГЎГЄГЁ: " << WSAGetLastError() << '\n';)
 		return -1;
 	}
 
-	// Поставим сервер на прием данных 
+	// ГЏГ®Г±ГІГ ГўГЁГ¬ Г±ГҐГ°ГўГҐГ° Г­Г  ГЇГ°ГЁГҐГ¬ Г¤Г Г­Г­Г»Гµ 
 	connection_status = listen(socket_descriptor, 5);
 	if (connection_status WIN(== SOCKET_ERROR)NIX(!= 0)) {
-		cout << "Сервер не может установить новое соединение!\n";
-		WIN(cout << "Код ошибки: " << WSAGetLastError() << '\n';)
+		cout << "Г‘ГҐГ°ГўГҐГ° Г­ГҐ Г¬Г®Г¦ГҐГІ ГіГ±ГІГ Г­Г®ГўГЁГІГј Г­Г®ГўГ®ГҐ Г±Г®ГҐГ¤ГЁГ­ГҐГ­ГЁГҐ!\n";
+		WIN(cout << "ГЉГ®Г¤ Г®ГёГЁГЎГЄГЁ: " << WSAGetLastError() << '\n';)
 		return -1;
 	}
 
@@ -115,7 +115,7 @@ int server_start() {	// инициализация сервера
 }
 
 
-void server_stop() {	// закрываем сокет, завершаем соединение
+void server_stop() {	// Г§Г ГЄГ°Г»ГўГ ГҐГ¬ Г±Г®ГЄГҐГІ, Г§Г ГўГҐГ°ГёГ ГҐГ¬ Г±Г®ГҐГ¤ГЁГ­ГҐГ­ГЁГҐ
 	WIN(closesocket)NIX(close)(socket_descriptor);
 	WIN(WSACleanup());
 }
@@ -123,18 +123,18 @@ void server_stop() {	// закрываем сокет, завершаем соединение
 
 void ConsoleWaitMessage() {
 	cin.clear();
-	//cin.ignore(numeric_limits<streamsize>::max(), '\n');	// очистка буфера консоли
-	cout << "Введите команду: ";
+	//cin.ignore(numeric_limits<streamsize>::max(), '\n');	// Г®Г·ГЁГ±ГІГЄГ  ГЎГіГґГҐГ°Г  ГЄГ®Г­Г±Г®Г«ГЁ
+	cout << "Г‚ГўГҐГ¤ГЁГІГҐ ГЄГ®Г¬Г Г­Г¤Гі: ";
 }
 
 
 int32_t SendResponse(const SOCKET connection_descriptor, const char* local_response_msg, const int32_t local_response_msg_length) {
-	int32_t iResult =	WIN(send(connection_descriptor, local_response_msg, local_response_msg_length, 0))	// отправляем ответ
+	int32_t iResult =	WIN(send(connection_descriptor, local_response_msg, local_response_msg_length, 0))	// Г®ГІГЇГ°Г ГўГ«ГїГҐГ¬ Г®ГІГўГҐГІ
 						NIX(write(connection_descriptor, local_response_msg, local_response_msg_length));
 
-	if (iResult WIN(== SOCKET_ERROR)NIX(!= 0)) {	// Если передали > 0  байт, значит пересылка прошла успешно
-		cout << "Ошибка отправки данных клиенту!\n";
-		WIN(cout << "Код ошибки: " << WSAGetLastError() << '\n';)
+	if (iResult WIN(== SOCKET_ERROR)NIX(!= 0)) {	// Г…Г±Г«ГЁ ГЇГҐГ°ГҐГ¤Г Г«ГЁ > 0  ГЎГ Г©ГІ, Г§Г­Г Г·ГЁГІ ГЇГҐГ°ГҐГ±Г»Г«ГЄГ  ГЇГ°Г®ГёГ«Г  ГіГ±ГЇГҐГёГ­Г®
+		cout << "ГЋГёГЁГЎГЄГ  Г®ГІГЇГ°Г ГўГЄГЁ Г¤Г Г­Г­Г»Гµ ГЄГ«ГЁГҐГ­ГІГі!\n";
+		WIN(cout << "ГЉГ®Г¤ Г®ГёГЁГЎГЄГЁ: " << WSAGetLastError() << '\n';)
 	}
 
 	return iResult;
@@ -142,12 +142,12 @@ int32_t SendResponse(const SOCKET connection_descriptor, const char* local_respo
 
 
 int32_t ReadRequest(const SOCKET connection_descriptor) {
-	int32_t iResult =	WIN(recv(connection_descriptor, request_msg, BUFFER_LENGTH, 0))	// получаем ответ
+	int32_t iResult =	WIN(recv(connection_descriptor, request_msg, BUFFER_LENGTH, 0))	// ГЇГ®Г«ГіГ·Г ГҐГ¬ Г®ГІГўГҐГІ
 						NIX(read(connection_descriptor, request_msg, BUFFER_LENGTH));
 
-	if (iResult WIN(== SOCKET_ERROR)NIX(!= 0)) {	// Если получили > 0  байт, значит приём прошёл успешно
-		cout << "Ошибка получения данных от клиента!\n";
-		WIN(cout << "Код ошибки: " << WSAGetLastError() << '\n';)
+	if (iResult WIN(== SOCKET_ERROR)NIX(!= 0)) {	// Г…Г±Г«ГЁ ГЇГ®Г«ГіГ·ГЁГ«ГЁ > 0  ГЎГ Г©ГІ, Г§Г­Г Г·ГЁГІ ГЇГ°ГЁВёГ¬ ГЇГ°Г®ГёВёГ« ГіГ±ГЇГҐГёГ­Г®
+		cout << "ГЋГёГЁГЎГЄГ  ГЇГ®Г«ГіГ·ГҐГ­ГЁГї Г¤Г Г­Г­Г»Гµ Г®ГІ ГЄГ«ГЁГҐГ­ГІГ !\n";
+		WIN(cout << "ГЉГ®Г¤ Г®ГёГЁГЎГЄГЁ: " << WSAGetLastError() << '\n';)
 	}
 
 	return iResult;
@@ -161,42 +161,43 @@ void MainRequestHandler(const SOCKET connection_descriptor) {
 	uint8_t command_code = request_msg[0];
 
 	WIN(memset(response_msg, 0, BUFFER_LENGTH))NIX(bzero(response_msg, BUFFER_LENGTH));
-	response_msg[0] = 1;	// устанавливаем значение ответа по умолчанию
+	response_msg[0] = 1;	// ГіГ±ГІГ Г­Г ГўГ«ГЁГўГ ГҐГ¬ Г§Г­Г Г·ГҐГ­ГЁГҐ Г®ГІГўГҐГІГ  ГЇГ® ГіГ¬Г®Г«Г·Г Г­ГЁГѕ
 
 	switch (command_code) {
-		case GCMD_REG:	// команда reg - зарегистрироваться
-			name = &request_msg[1];	// создаём нового пользователя
+		case GCMD_REG:	// ГЄГ®Г¬Г Г­Г¤Г  reg - Г§Г Г°ГҐГЈГЁГ±ГІГ°ГЁГ°Г®ГўГ ГІГјГ±Гї
+			name = &request_msg[1];	// Г±Г®Г§Г¤Г ВёГ¬ Г­Г®ГўГ®ГЈГ® ГЇГ®Г«ГјГ§Г®ГўГ ГІГҐГ«Гї
 			login = &request_msg[1 + login.length()  + 1];
 			iResult = users.NewUser(name, login, (SHA1PwdArray&)request_msg[1 + name.length() + 1 + login.length() + 1]);
-			if (iResult > 0) {	// регистрация прошла успешно
-				users_map.find(connection_descriptor)->second = iResult;	// добавляем id пользователя в словарь
+			if (iResult > 0) {	// Г°ГҐГЈГЁГ±ГІГ°Г Г¶ГЁГї ГЇГ°Г®ГёГ«Г  ГіГ±ГЇГҐГёГ­Г®
+				users_map.find(connection_descriptor)->second = iResult;	// Г¤Г®ГЎГ ГўГ«ГїГҐГ¬ id ГЇГ®Г«ГјГ§Г®ГўГ ГІГҐГ«Гї Гў Г±Г«Г®ГўГ Г°Гј
 				iResult = 1;
 			}
-			response_msg[0] = (int8_t)iResult;	// подготовили ответ
+			response_msg[0] = (int8_t)iResult;	// ГЇГ®Г¤ГЈГ®ГІГ®ГўГЁГ«ГЁ Г®ГІГўГҐГІ
 			break;
-		case GCMD_LOGIN:	// команда login - вход
+		case GCMD_LOGIN:	// ГЄГ®Г¬Г Г­Г¤Г  login - ГўГµГ®Г¤
 			login = &request_msg[1];
 
 			if (users.IsLogged(login)) {
-				response_msg[0] = ERR_ALREADY_LOGGED;	// пользователь с таким именем уже вошёл
+				response_msg[0] = ERR_ALREADY_LOGGED;	// ГЇГ®Г«ГјГ§Г®ГўГ ГІГҐГ«Гј Г± ГІГ ГЄГЁГ¬ ГЁГ¬ГҐГ­ГҐГ¬ ГіГ¦ГҐ ГўГ®ГёВёГ«
 				break;
 			}
 
-			iResult = users.Login(login, (SHA1PwdArray&)request_msg[1 + login.length() + 1]);	// передаём ссылку на фрагмент буфeра с данными хэша
-			if (iResult > 0) {	// login прошёл успешно
-				users_map.find(connection_descriptor)->second = iResult;	// добавляем id пользователя в словарь
+			iResult = users.Login(login, (SHA1PwdArray&)request_msg[1 + login.length() + 1]);	// ГЇГҐГ°ГҐГ¤Г ВёГ¬ Г±Г±Г»Г«ГЄГі Г­Г  ГґГ°Г ГЈГ¬ГҐГ­ГІ ГЎГіГґeГ°Г  Г± Г¤Г Г­Г­Г»Г¬ГЁ ГµГЅГёГ 
+			if (iResult > 0) {	// login ГЇГ°Г®ГёВёГ« ГіГ±ГЇГҐГёГ­Г®
+				users_map.find(connection_descriptor)->second = iResult;	// Г¤Г®ГЎГ ГўГ«ГїГҐГ¬ id ГЇГ®Г«ГјГ§Г®ГўГ ГІГҐГ«Гї Гў Г±Г«Г®ГўГ Г°Гј
 				iResult = 1;
+				cout << '\n' << GetTime() << " Г­Г  Г±Г®ГЄГҐГІГҐ #" << connection_descriptor << " ГўГ®ГёВёГ« Гў Г·Г ГІ ГЇГ®Г«ГјГ§Г®ГўГ ГІГҐГ«Гј '" << login << "'\n";
+				ConsoleWaitMessage();
 			}
-			response_msg[0] = (int8_t)iResult;	// подготовили ответ
-			cout << '\n' << GetTime() << " на сокете #" << connection_descriptor << " вошёл в чат пользователь '" << login << "'\n";
-			ConsoleWaitMessage();
+			response_msg[0] = (int8_t)iResult;	// ГЇГ®Г¤ГЈГ®ГІГ®ГўГЁГ«ГЁ Г®ГІГўГҐГІ
+
 			break;
 		case LCMD_SEND:
 			receiver = &request_msg[1];
 			text = &request_msg[1 + receiver.length() + 1];
 			iResult = messages.Add(users_map.at(connection_descriptor),
-					users.GetUserLogin(users_map.at(connection_descriptor)),	// получаем login отправителя по его id
-					users.GetUserId(receiver),	// получаем id получателя
+					users.GetUserLogin(users_map.at(connection_descriptor)),	// ГЇГ®Г«ГіГ·Г ГҐГ¬ login Г®ГІГЇГ°Г ГўГЁГІГҐГ«Гї ГЇГ® ГҐГЈГ® id
+					users.GetUserId(receiver),	// ГЇГ®Г«ГіГ·Г ГҐГ¬ id ГЇГ®Г«ГіГ·Г ГІГҐГ«Гї
 					receiver,
 					text);
 			break;
@@ -204,10 +205,10 @@ void MainRequestHandler(const SOCKET connection_descriptor) {
 		case LCMD_READ_UNREADED: {
 				bool showUnReadedOnly = (command_code == LCMD_READ_UNREADED ? true : false);
 				receiver = &request_msg[1];
-				uint32_t receiverId = users.GetUserId(receiver);	// получаем id получателя
-				for (auto i = 0; i < messages.GetLastMsgId(); i++)	// перебираем все соообщения
+				uint32_t receiverId = users.GetUserId(receiver);	// ГЇГ®Г«ГіГ·Г ГҐГ¬ id ГЇГ®Г«ГіГ·Г ГІГҐГ«Гї
+				for (auto i = 0; i < messages.GetLastMsgId(); i++)	// ГЇГҐГ°ГҐГЎГЁГ°Г ГҐГ¬ ГўГ±ГҐ Г±Г®Г®Г®ГЎГ№ГҐГ­ГЁГї
 					if (messages.ReadByOne(text, receiverId, i, showUnReadedOnly)) {
-						iResult = SendResponse(connection_descriptor, text.c_str(), text.length() + 1);	// отправляем ответы
+						iResult = SendResponse(connection_descriptor, text.c_str(), text.length() + 1);	// Г®ГІГЇГ°Г ГўГ«ГїГҐГ¬ Г®ГІГўГҐГІГ»
 						ReadRequest(connection_descriptor);
 					}
 				response_msg[0] = 0;
@@ -219,16 +220,16 @@ void MainRequestHandler(const SOCKET connection_descriptor) {
 			response_msg_length += iResult + 1;
 			break;
 		case LCMD_USERS_LIST: {
-				for (auto i = 1; i < users.GetUsersQty(); i++)	// перебираем всех пользователей, кроме служебного (№0)
+				for (auto i = 1; i < users.GetUsersQty(); i++)	// ГЇГҐГ°ГҐГЎГЁГ°Г ГҐГ¬ ГўГ±ГҐГµ ГЇГ®Г«ГјГ§Г®ГўГ ГІГҐГ«ГҐГ©, ГЄГ°Г®Г¬ГҐ Г±Г«ГіГ¦ГҐГЎГ­Г®ГЈГ® (В№0)
 					if (users.ListByOne(i, text)) {
-						iResult = SendResponse(connection_descriptor, text.c_str(), text.length() + 1);	// отправляем ответы
+						iResult = SendResponse(connection_descriptor, text.c_str(), text.length() + 1);	// Г®ГІГЇГ°Г ГўГ«ГїГҐГ¬ Г®ГІГўГҐГІГ»
 						ReadRequest(connection_descriptor);
 					}
 				response_msg[0] = 0;
 			}
 			break;
 		case LCMD_USER_DELETE:
-			users.DeleteUser(users_map.at(connection_descriptor));	// аргумент - id пользователя
+			users.DeleteUser(users_map.at(connection_descriptor));	// Г Г°ГЈГіГ¬ГҐГ­ГІ - id ГЇГ®Г«ГјГ§Г®ГўГ ГІГҐГ«Гї
 			users_map.find(connection_descriptor)->second = 0;
 			break;
 		case SLCMD_CHANGE_NAME:
@@ -243,9 +244,9 @@ void MainRequestHandler(const SOCKET connection_descriptor) {
 		case SLCMD_CHANGE_PASSWORD:
 			users.ChangeRegData(users_map.at(connection_descriptor), nullptr, nullptr, (SHA1PwdArray*)&request_msg[1], command_code);
 			break; 
-		case LCMD_LOGOUT:	// локальная команда logout - выход
-			users.Logout(users_map.at(connection_descriptor));	// аргумент - id пользователя
-			cout << '\n' << GetTime() << " на сокете #" << connection_descriptor << " вышел из чата пользователь '" << users.GetUserLogin(users_map.at(connection_descriptor)) << "'\n";
+		case LCMD_LOGOUT:	// Г«Г®ГЄГ Г«ГјГ­Г Гї ГЄГ®Г¬Г Г­Г¤Г  logout - ГўГ»ГµГ®Г¤
+			users.Logout(users_map.at(connection_descriptor));	// Г Г°ГЈГіГ¬ГҐГ­ГІ - id ГЇГ®Г«ГјГ§Г®ГўГ ГІГҐГ«Гї
+			cout << '\n' << GetTime() << " Г­Г  Г±Г®ГЄГҐГІГҐ #" << connection_descriptor << " ГўГ»ГёГҐГ« ГЁГ§ Г·Г ГІГ  ГЇГ®Г«ГјГ§Г®ГўГ ГІГҐГ«Гј '" << users.GetUserLogin(users_map.at(connection_descriptor)) << "'\n";
 			ConsoleWaitMessage();
 			users_map.find(connection_descriptor)->second = 0;
 			break;
@@ -253,45 +254,45 @@ void MainRequestHandler(const SOCKET connection_descriptor) {
 			iResult = users.GetUserId(&request_msg[1]);
 			response_msg[0] = (int8_t)(iResult > 0 ? 1 : 0);
 			break;
-		case LCMD_MESSAGES_COUNT:	// все сообщения
-		case LCMD_UNREADED_COUNT:	// только непрочитанные
+		case LCMD_MESSAGES_COUNT:	// ГўГ±ГҐ Г±Г®Г®ГЎГ№ГҐГ­ГЁГї
+		case LCMD_UNREADED_COUNT:	// ГІГ®Г«ГјГЄГ® Г­ГҐГЇГ°Г®Г·ГЁГІГ Г­Г­Г»ГҐ
 			count = messages.GetMessagesQty(users_map.at(connection_descriptor), command_code == LCMD_UNREADED_COUNT);
 			response_msg[0] = (int8_t)(count > 0 ? 1 : 0);
-			memcpy(&response_msg[1], &count, sizeof(count));	// помещаем в буфер кол-во непрочитанных сообщений
+			memcpy(&response_msg[1], &count, sizeof(count));	// ГЇГ®Г¬ГҐГ№Г ГҐГ¬ Гў ГЎГіГґГҐГ° ГЄГ®Г«-ГўГ® Г­ГҐГЇГ°Г®Г·ГЁГІГ Г­Г­Г»Гµ Г±Г®Г®ГЎГ№ГҐГ­ГЁГ©
 			response_msg_length += sizeof(count);
 			break;
 		default:
 			;
 	}
 
-	iResult = SendResponse(connection_descriptor, response_msg, response_msg_length);	// отправляем ответ
+	iResult = SendResponse(connection_descriptor, response_msg, response_msg_length);	// Г®ГІГЇГ°Г ГўГ«ГїГҐГ¬ Г®ГІГўГҐГІ
 }
 
 
 int InitializeServer() {
-	cout << "Инициализация сервера чата... ";
+	cout << "Г€Г­ГЁГ¶ГЁГ Г«ГЁГ§Г Г¶ГЁГї Г±ГҐГ°ГўГҐГ°Г  Г·Г ГІГ ... ";
 	if (server_start() == 0)
-		cout << "выполнена!\n";
+		cout << "ГўГ»ГЇГ®Г«Г­ГҐГ­Г !\n";
 	else {
-		cout << "Ошибка инициализации сервера чата; программа будет закрыта.\n";
+		cout << "ГЋГёГЁГЎГЄГ  ГЁГ­ГЁГ¶ГЁГ Г«ГЁГ§Г Г¶ГЁГЁ Г±ГҐГ°ГўГҐГ°Г  Г·Г ГІГ ; ГЇГ°Г®ГЈГ°Г Г¬Г¬Г  ГЎГіГ¤ГҐГІ Г§Г ГЄГ°Г»ГІГ .\n";
 		loop = false;
 		return 1;
 	}
 
-	cout << "Загрузка базы данных пользователей из внешнего файла... ";
-	if (users.Open())	// загружаем данные пользователей
-		cout << "выполнена!\n";
-	else if (QuestionYN("Закрыть сервер?")) {
+	cout << "Г‡Г ГЈГ°ГіГ§ГЄГ  ГЎГ Г§Г» Г¤Г Г­Г­Г»Гµ ГЇГ®Г«ГјГ§Г®ГўГ ГІГҐГ«ГҐГ© ГЁГ§ ГўГ­ГҐГёГ­ГҐГЈГ® ГґГ Г©Г«Г ... ";
+	if (users.Open())	// Г§Г ГЈГ°ГіГ¦Г ГҐГ¬ Г¤Г Г­Г­Г»ГҐ ГЇГ®Г«ГјГ§Г®ГўГ ГІГҐГ«ГҐГ©
+		cout << "ГўГ»ГЇГ®Г«Г­ГҐГ­Г !\n";
+	else if (QuestionYN("Г‡Г ГЄГ°Г»ГІГј Г±ГҐГ°ГўГҐГ°?")) {
 		loop = false;
-		return 2;	// аварийный выход по желанию пользователя
+		return 2;	// Г ГўГ Г°ГЁГ©Г­Г»Г© ГўГ»ГµГ®Г¤ ГЇГ® Г¦ГҐГ«Г Г­ГЁГѕ ГЇГ®Г«ГјГ§Г®ГўГ ГІГҐГ«Гї
 	}
 
-	cout << "Загрузка базы данных сообщений из внешнего файла... ";
-	if (messages.Open())	// загружаем сообщения
-		cout << "выполнена!\n";
-	else if (QuestionYN("Закрыть сервер?")) {
+	cout << "Г‡Г ГЈГ°ГіГ§ГЄГ  ГЎГ Г§Г» Г¤Г Г­Г­Г»Гµ Г±Г®Г®ГЎГ№ГҐГ­ГЁГ© ГЁГ§ ГўГ­ГҐГёГ­ГҐГЈГ® ГґГ Г©Г«Г ... ";
+	if (messages.Open())	// Г§Г ГЈГ°ГіГ¦Г ГҐГ¬ Г±Г®Г®ГЎГ№ГҐГ­ГЁГї
+		cout << "ГўГ»ГЇГ®Г«Г­ГҐГ­Г !\n";
+	else if (QuestionYN("Г‡Г ГЄГ°Г»ГІГј Г±ГҐГ°ГўГҐГ°?")) {
 		loop = false;
-		return 3;	// аварийный выход по желанию пользователя
+		return 3;	// Г ГўГ Г°ГЁГ©Г­Г»Г© ГўГ»ГµГ®Г¤ ГЇГ® Г¦ГҐГ«Г Г­ГЁГѕ ГЇГ®Г«ГјГ§Г®ГўГ ГІГҐГ«Гї
 	}
 
 	AtStart();
@@ -299,7 +300,7 @@ int InitializeServer() {
 }
 
 
-int ChatCommandsHandler() {	// обработчик консольных команд чата
+int ChatCommandsHandler() {	// Г®ГЎГ°Г ГЎГ®ГІГ·ГЁГЄ ГЄГ®Г­Г±Г®Г«ГјГ­Г»Гµ ГЄГ®Г¬Г Г­Г¤ Г·Г ГІГ 
 	string command, text;
 
 	while (loop) {
@@ -307,25 +308,25 @@ int ChatCommandsHandler() {	// обработчик консольных команд чата
 		getline(cin, command);
 
 		if (!command.empty()) {
-			switch (get_command_code(SERVER_COMMANDS, command)) {	// аназизируем серверную команду
+			switch (get_command_code(SERVER_COMMANDS, command)) {	// Г Г­Г Г§ГЁГ§ГЁГ°ГіГҐГ¬ Г±ГҐГ°ГўГҐГ°Г­ГіГѕ ГЄГ®Г¬Г Г­Г¤Гі
 				case SCMD_SAVE:
 					if (users.Save() && messages.Save())
-						cout << "Данные пользователей и сообщений сохранены.\n";
+						cout << "Г„Г Г­Г­Г»ГҐ ГЇГ®Г«ГјГ§Г®ГўГ ГІГҐГ«ГҐГ© ГЁ Г±Г®Г®ГЎГ№ГҐГ­ГЁГ© Г±Г®ГµГ°Г Г­ГҐГ­Г».\n";
 					break;
 				case SCMD_CON:
 					if (!users_map.empty()) {
-						cout << "Список подключений:\n   сокет : учётное имя\n";
+						cout << "Г‘ГЇГЁГ±Г®ГЄ ГЇГ®Г¤ГЄГ«ГѕГ·ГҐГ­ГЁГ©:\n   Г±Г®ГЄГҐГІ : ГіГ·ВёГІГ­Г®ГҐ ГЁГ¬Гї\n";
 						for (map <SOCKET, uint32_t>::iterator it = users_map.begin(); it != users_map.end(); it++) {
-							text = it->second != 0 ? users.GetUserLogin(users_map.at(it->first)) : "<вход не выполнен>";
+							text = it->second != 0 ? users.GetUserLogin(users_map.at(it->first)) : "<ГўГµГ®Г¤ Г­ГҐ ГўГ»ГЇГ®Г«Г­ГҐГ­>";
 							cout << "     " << it->first << " : " << text << "\n";
 						}
 					}
 					else
-						cout << "Нет подключений.\n";
+						cout << "ГЌГҐГІ ГЇГ®Г¤ГЄГ«ГѕГ·ГҐГ­ГЁГ©.\n";
 					break;
 				case SCMD_USERS:
-					cout << "Список пользователей:\n";
-					for (auto i = 1; i < users.GetUsersQty(); i++)	// перебираем всех пользователей, кроме служебного (№0)
+					cout << "Г‘ГЇГЁГ±Г®ГЄ ГЇГ®Г«ГјГ§Г®ГўГ ГІГҐГ«ГҐГ©:\n";
+					for (auto i = 1; i < users.GetUsersQty(); i++)	// ГЇГҐГ°ГҐГЎГЁГ°Г ГҐГ¬ ГўГ±ГҐГµ ГЇГ®Г«ГјГ§Г®ГўГ ГІГҐГ«ГҐГ©, ГЄГ°Г®Г¬ГҐ Г±Г«ГіГ¦ГҐГЎГ­Г®ГЈГ® (В№0)
 						if (users.ListByOne(i, text))
 							cout << text;
 					break;
@@ -333,16 +334,16 @@ int ChatCommandsHandler() {	// обработчик консольных команд чата
 					print_help(SERVER_COMMANDS);
 					break;
 				case SCMD_EXIT:
-					if (users.IsChanged())	// если есть изменения, сохраняем данные пользователей во внешний файл
+					if (users.IsChanged())	// ГҐГ±Г«ГЁ ГҐГ±ГІГј ГЁГ§Г¬ГҐГ­ГҐГ­ГЁГї, Г±Г®ГµГ°Г Г­ГїГҐГ¬ Г¤Г Г­Г­Г»ГҐ ГЇГ®Г«ГјГ§Г®ГўГ ГІГҐГ«ГҐГ© ГўГ® ГўГ­ГҐГёГ­ГЁГ© ГґГ Г©Г«
 						users.Save();
-					if (messages.IsChanged())	// если есть изменения, сохраняем сообщения во внешний файл
+					if (messages.IsChanged())	// ГҐГ±Г«ГЁ ГҐГ±ГІГј ГЁГ§Г¬ГҐГ­ГҐГ­ГЁГї, Г±Г®ГµГ°Г Г­ГїГҐГ¬ Г±Г®Г®ГЎГ№ГҐГ­ГЁГї ГўГ® ГўГ­ГҐГёГ­ГЁГ© ГґГ Г©Г«
 						messages.Save();
 					if (!users_map.empty()) {
-						if (QuestionYN("Есть действующие подключения. Всё равно закрыть сервер?"))
-							loop = false;	// инициализируем остановка сервера
+						if (QuestionYN("Г…Г±ГІГј Г¤ГҐГ©Г±ГІГўГіГѕГ№ГЁГҐ ГЇГ®Г¤ГЄГ«ГѕГ·ГҐГ­ГЁГї. Г‚Г±Вё Г°Г ГўГ­Г® Г§Г ГЄГ°Г»ГІГј Г±ГҐГ°ГўГҐГ°?"))
+							loop = false;	// ГЁГ­ГЁГ¶ГЁГ Г«ГЁГ§ГЁГ°ГіГҐГ¬ Г®Г±ГІГ Г­Г®ГўГЄГ  Г±ГҐГ°ГўГҐГ°Г 
 					}
-					else if (QuestionYN("Подтвердите остановку сервера"))
-						loop = false;	// инициализируем остановка сервера
+					else if (QuestionYN("ГЏГ®Г¤ГІГўГҐГ°Г¤ГЁГІГҐ Г®Г±ГІГ Г­Г®ГўГЄГі Г±ГҐГ°ГўГҐГ°Г "))
+						loop = false;	// ГЁГ­ГЁГ¶ГЁГ Г«ГЁГ§ГЁГ°ГіГҐГ¬ Г®Г±ГІГ Г­Г®ГўГЄГ  Г±ГҐГ°ГўГҐГ°Г 
 
 					break;
 				default:
@@ -356,30 +357,30 @@ int ChatCommandsHandler() {	// обработчик консольных команд чата
 }
 
 
-int ChatServer() {	// главный обработчик чата
+int ChatServer() {	// ГЈГ«Г ГўГ­Г»Г© Г®ГЎГ°Г ГЎГ®ГІГ·ГЁГЄ Г·Г ГІГ 
 	while (loop) {	// Communication Establishment
 		FD_ZERO(&descriptors_set);
 		FD_SET(socket_descriptor, &descriptors_set);
 
-		int iResult = select(0, &descriptors_set, nullptr, nullptr, &timeout);	// проверяем готовность сокета на новые подключения
+		int iResult = select(0, &descriptors_set, nullptr, nullptr, &timeout);	// ГЇГ°Г®ГўГҐГ°ГїГҐГ¬ ГЈГ®ГІГ®ГўГ­Г®Г±ГІГј Г±Г®ГЄГҐГІГ  Г­Г  Г­Г®ГўГ»ГҐ ГЇГ®Г¤ГЄГ«ГѕГ·ГҐГ­ГЁГї
 
 		if (iResult > 0 && users_map.size() < FD_SETSIZE) {
 			struct sockaddr_in client_address;
 			socklen_t length = sizeof(client_address);
 			SOCKET socket = accept(socket_descriptor, (struct sockaddr*)&client_address, &length);
 			if (socket WIN(== INVALID_SOCKET)NIX(< 0)) {
-				cout << "\nСервер не может принимать данные от клиента!\n";
-				WIN(cout << "Код ошибки: " << WSAGetLastError() << '\n';)
+				cout << "\nГ‘ГҐГ°ГўГҐГ° Г­ГҐ Г¬Г®Г¦ГҐГІ ГЇГ°ГЁГ­ГЁГ¬Г ГІГј Г¤Г Г­Г­Г»ГҐ Г®ГІ ГЄГ«ГЁГҐГ­ГІГ !\n";
+				WIN(cout << "ГЉГ®Г¤ Г®ГёГЁГЎГЄГЁ: " << WSAGetLastError() << '\n';)
 			}
 			else {
 				users_map.emplace(socket, 0);
-				cout << '\n' << GetTime() << " подключился клиент #" << socket << '\n';
+				cout << '\n' << GetTime() << " ГЇГ®Г¤ГЄГ«ГѕГ·ГЁГ«Г±Гї ГЄГ«ГЁГҐГ­ГІ #" << socket << '\n';
 			}
 			ConsoleWaitMessage();
 		}
 		else {
 			if (iResult WIN(== SOCKET_ERROR)NIX(!= 0)) {
-				WIN(cout << "Код ошибки: " << WSAGetLastError() << '\n';);
+				WIN(cout << "ГЉГ®Г¤ Г®ГёГЁГЎГЄГЁ: " << WSAGetLastError() << '\n';);
 				ConsoleWaitMessage();
 			}
 
@@ -393,33 +394,33 @@ int ChatServer() {	// главный обработчик чата
 			FD_ZERO(&descriptors_set);
 			FD_SET(it->first, &descriptors_set);
 
-			iResult = select(0, nullptr, nullptr, &descriptors_set, &timeout);	// проверяем сокет на ошибки
+			iResult = select(0, nullptr, nullptr, &descriptors_set, &timeout);	// ГЇГ°Г®ГўГҐГ°ГїГҐГ¬ Г±Г®ГЄГҐГІ Г­Г  Г®ГёГЁГЎГЄГЁ
 			if (iResult > 0) {
-				WIN(cout << "\nЕсть ошибки в подключении клиента\t" << it->first <<
-					"\nКод ошибки : " << WSAGetLastError() << '\n';);
+				WIN(cout << "\nГ…Г±ГІГј Г®ГёГЁГЎГЄГЁ Гў ГЇГ®Г¤ГЄГ«ГѕГ·ГҐГ­ГЁГЁ ГЄГ«ГЁГҐГ­ГІГ \t" << it->first <<
+					"\nГЉГ®Г¤ Г®ГёГЁГЎГЄГЁ : " << WSAGetLastError() << '\n';);
 				ConsoleWaitMessage();
 			}
 
 			descriptors_set.fd_count = 1;
-			iResult = select(0, &descriptors_set, nullptr, nullptr, &timeout);	// проверяем готовность сокета на чтение
+			iResult = select(0, &descriptors_set, nullptr, nullptr, &timeout);	// ГЇГ°Г®ГўГҐГ°ГїГҐГ¬ ГЈГ®ГІГ®ГўГ­Г®Г±ГІГј Г±Г®ГЄГҐГІГ  Г­Г  Г·ГІГҐГ­ГЁГҐ
 			if (iResult > 0) {
 				WIN(memset(request_msg, 0, BUFFER_LENGTH))NIX(bzero(request_msg, BUFFER_LENGTH));
-				iResult = recv(it->first, request_msg, BUFFER_LENGTH, 0);	// принимаем запрос
+				iResult = recv(it->first, request_msg, BUFFER_LENGTH, 0);	// ГЇГ°ГЁГ­ГЁГ¬Г ГҐГ¬ Г§Г ГЇГ°Г®Г±
 				
 				if (iResult > 0) {
 					if (strcmp(request_msg, CLIENT_STOP_MESSAGE) == 0) {
-						cout << '\n' << GetTime() << " клиент #" << it->first << " отключился\n";
+						cout << '\n' << GetTime() << " ГЄГ«ГЁГҐГ­ГІ #" << it->first << " Г®ГІГЄГ«ГѕГ·ГЁГ«Г±Гї\n";
 						ConsoleWaitMessage();
 						it = users_map.erase(it);
 						continue;
 					}
 
-					MainRequestHandler(it->first);	// обрабатывает входящие данные из буфера и отправляет ответы
+					MainRequestHandler(it->first);	// Г®ГЎГ°Г ГЎГ ГІГ»ГўГ ГҐГІ ГўГµГ®Г¤ГїГ№ГЁГҐ Г¤Г Г­Г­Г»ГҐ ГЁГ§ ГЎГіГґГҐГ°Г  ГЁ Г®ГІГЇГ°Г ГўГ«ГїГҐГІ Г®ГІГўГҐГІГ»
 				}
-				else if (iResult WIN(== SOCKET_ERROR)NIX(!= 0)) {	// клиент "отвалился"
-					cout << '\n' << GetTime() << " связь с клиентом #" << it->first << " потеряна\n";
+				else if (iResult WIN(== SOCKET_ERROR)NIX(!= 0)) {	// ГЄГ«ГЁГҐГ­ГІ "Г®ГІГўГ Г«ГЁГ«Г±Гї"
+					cout << '\n' << GetTime() << " Г±ГўГїГ§Гј Г± ГЄГ«ГЁГҐГ­ГІГ®Г¬ #" << it->first << " ГЇГ®ГІГҐГ°ГїГ­Г \n";
 					ConsoleWaitMessage();
-					users.Logout(users_map.at(it->first));	// помечаем пользователя как отключённого
+					users.Logout(users_map.at(it->first));	// ГЇГ®Г¬ГҐГ·Г ГҐГ¬ ГЇГ®Г«ГјГ§Г®ГўГ ГІГҐГ«Гї ГЄГ ГЄ Г®ГІГЄГ«ГѕГ·ВёГ­Г­Г®ГЈГ®
 					it = users_map.erase(it);
 					continue;
 				}
@@ -429,7 +430,7 @@ int ChatServer() {	// главный обработчик чата
 		WIN(Sleep(DELAY_MS))NIX(usleep(DELAY_MCS));
 	}
 
-	// остановка сервера и выход
+	// Г®Г±ГІГ Г­Г®ГўГЄГ  Г±ГҐГ°ГўГҐГ°Г  ГЁ ГўГ»ГµГ®Г¤
 	server_stop();
 
 	return 0;
