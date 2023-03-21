@@ -1,0 +1,242 @@
+[
+    {
+        "date_time": "[2022-12-17 12:34:57]",
+        "id": 0,
+        "receiverId": 7,
+        "receiverLogin": "babay",
+        "senderId": 3,
+        "senderLogin": "kgg",
+        "text": "this is message #1 to babay",
+        "wasReaded": false
+    },
+    {
+        "date_time": "[2022-12-17 12:35:32]",
+        "id": 1,
+        "receiverId": 2,
+        "receiverLogin": "zmey",
+        "senderId": 3,
+        "senderLogin": "kgg",
+        "text": "this is message #1 to zmey!",
+        "wasReaded": false
+    },
+    {
+        "date_time": "[2022-12-17 14:32:59]",
+        "id": 2,
+        "receiverId": 3,
+        "receiverLogin": "kgg",
+        "senderId": 7,
+        "senderLogin": "babay",
+        "text": "this is message #1 to kgg",
+        "wasReaded": false
+    },
+    {
+        "date_time": "[2022-12-17 14:34:09]",
+        "id": 3,
+        "receiverId": 10,
+        "receiverLogin": "Json",
+        "senderId": 7,
+        "senderLogin": "babay",
+        "text": "this is message #1 to Json",
+        "wasReaded": false
+    },
+    {
+        "date_time": "[2022-12-17 14:34:21]",
+        "id": 4,
+        "receiverId": 10,
+        "receiverLogin": "Json",
+        "senderId": 7,
+        "senderLogin": "babay",
+        "text": "this is message #2 to Json",
+        "wasReaded": false
+    },
+    {
+        "date_time": "[2022-12-17 14:34:35]",
+        "id": 5,
+        "receiverId": 10,
+        "receiverLogin": "Json",
+        "senderId": 7,
+        "senderLogin": "babay",
+        "text": "this is message #3 to Json",
+        "wasReaded": false
+    },
+    {
+        "date_time": "[2022-12-17 15:34:29]",
+        "id": 6,
+        "receiverId": 10,
+        "receiverLogin": "Json",
+        "senderId": 3,
+        "senderLogin": "kgg",
+        "text": "for Json 44444444",
+        "wasReaded": false
+    },
+    {
+        "date_time": "[2022-12-17 15:39:07]",
+        "id": 7,
+        "receiverId": 3,
+        "receiverLogin": "kgg",
+        "senderId": 10,
+        "senderLogin": "Json",
+        "text": "from json 1231231",
+        "wasReaded": false
+    },
+    {
+        "date_time": "[2022-12-17 15:39:31]",
+        "id": 8,
+        "receiverId": 3,
+        "receiverLogin": "kgg",
+        "senderId": 10,
+        "senderLogin": "Json",
+        "text": "987654 from json",
+        "wasReaded": false
+    },
+    {
+        "date_time": "[2022-12-17 19:40:18]",
+        "id": 9,
+        "receiverId": 1,
+        "receiverLogin": "vasya",
+        "senderId": 3,
+        "senderLogin": "kgg",
+        "text": "это сообщение №1 для Васи",
+        "wasReaded": false
+    },
+    {
+        "date_time": "[2022-12-17 19:40:52]",
+        "id": 10,
+        "receiverId": 10,
+        "receiverLogin": "Json",
+        "senderId": 3,
+        "senderLogin": "kgg",
+        "text": "это сообщение №1 для Джейсона!",
+        "wasReaded": false
+    },
+    {
+        "date_time": "[2022-12-17 20:29:23]",
+        "id": 11,
+        "receiverId": 13,
+        "receiverLogin": "petrov",
+        "senderId": 2,
+        "senderLogin": "zmey",
+        "text": "Привет, Ваня!",
+        "wasReaded": false
+    },
+    {
+        "date_time": "[2022-12-17 20:29:35]",
+        "id": 12,
+        "receiverId": 13,
+        "receiverLogin": "petrov",
+        "senderId": 2,
+        "senderLogin": "zmey",
+        "text": "как дела?",
+        "wasReaded": false
+    },
+    {
+        "date_time": "[2022-12-17 20:31:03]",
+        "id": 13,
+        "receiverId": 2,
+        "receiverLogin": "zmey",
+        "senderId": 13,
+        "senderLogin": "petrov",
+        "text": "и тебе привет, змей!",
+        "wasReaded": false
+    },
+    {
+        "date_time": "[2022-12-17 21:25:43]",
+        "id": 14,
+        "receiverId": 13,
+        "receiverLogin": "petrov",
+        "senderId": 2,
+        "senderLogin": "zmey",
+        "text": "повторное сообщение Петрову от змея",
+        "wasReaded": false
+    },
+    {
+        "date_time": "[2022-12-17 21:27:46]",
+        "id": 15,
+        "receiverId": 13,
+        "receiverLogin": "petrov",
+        "senderId": 12,
+        "senderLogin": "ivan",
+        "text": "сообщение Петрову от Ивана",
+        "wasReaded": false
+    },
+    {
+        "date_time": "[2022-12-19 10:57:36]",
+        "id": 16,
+        "receiverId": 1,
+        "receiverLogin": "vasya",
+        "senderId": 13,
+        "senderLogin": "petrov",
+        "text": "Вася, привет от Петрова!",
+        "wasReaded": false
+    },
+    {
+        "date_time": "[2023-02-15 00:58:01]",
+        "id": 17,
+        "receiverId": 10,
+        "receiverLogin": "Json",
+        "senderId": 3,
+        "senderLogin": "kgg",
+        "text": "это сообщение Джейсону   от 15 февраля 2023 г. от kgg",
+        "wasReaded": false
+    },
+    {
+        "date_time": "[2023-02-15 10:32:59]",
+        "id": 18,
+        "receiverId": 15,
+        "receiverLogin": "",
+        "senderId": 14,
+        "senderLogin": "new",
+        "text": "это текст для новенького-2",
+        "wasReaded": false
+    },
+    {
+        "date_time": "[2023-03-21 19:23:34]",
+        "id": 19,
+        "receiverId": 2,
+        "receiverLogin": "zmey",
+        "senderId": 3,
+        "senderLogin": "kgg",
+        "text": "2zmey проверка связи",
+        "wasReaded": false
+    },
+    {
+        "date_time": "[2023-03-21 20:20:55]",
+        "id": 20,
+        "receiverId": 3,
+        "receiverLogin": "kgg",
+        "senderId": 12,
+        "senderLogin": "ivan",
+        "text": "from ivan to kgg",
+        "wasReaded": false
+    },
+    {
+        "date_time": "[2023-03-21 20:21:46]",
+        "id": 21,
+        "receiverId": 12,
+        "receiverLogin": "ivan",
+        "senderId": 2,
+        "senderLogin": "zmey",
+        "text": "from zmey to ivan",
+        "wasReaded": false
+    },
+    {
+        "date_time": "[2023-03-21 20:22:12]",
+        "id": 22,
+        "receiverId": 12,
+        "receiverLogin": "ivan",
+        "senderId": 3,
+        "senderLogin": "kgg",
+        "text": "from kgg to ivan",
+        "wasReaded": false
+    },
+    {
+        "date_time": "[2023-03-21 20:23:31]",
+        "id": 23,
+        "receiverId": 12,
+        "receiverLogin": "ivan",
+        "senderId": 1,
+        "senderLogin": "vasya",
+        "text": "msg from vasya to ivan",
+        "wasReaded": false
+    }
+]
