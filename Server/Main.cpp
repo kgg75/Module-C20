@@ -23,7 +23,7 @@ int main() {
 	WaitForMultipleObjects(THREADS_NUMBER, hThreads, TRUE, INFINITE);
 
 	DWORD iRetVal[THREADS_NUMBER];
-	if (GetExitCodeThread(hThreads[1], &iRetVal[0]))
+	if (GetExitCodeThread(hThreads[0], &iRetVal[0]))
 		CloseHandle(hThreads[0]);
 	if (GetExitCodeThread(hThreads[1], &iRetVal[1]))
 		CloseHandle(hThreads[1]);
